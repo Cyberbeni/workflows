@@ -18,5 +18,7 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Check package file
+      run: [[ "// swift-tools-version:${{ inputs.swift-version }}" == "$(head -1 Package.swift)" ]]
     - name: Check build
       run: swift build --configuration release --disable-sandbox
