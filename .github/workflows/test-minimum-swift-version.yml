@@ -11,7 +11,7 @@ on:
         type: string
 
 jobs:
-  swiftformat-lint:
+  test-swift-version:
     runs-on: ubuntu-latest
     container:
       image: swift:${{ swift-version }}
