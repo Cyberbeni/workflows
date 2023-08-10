@@ -3,7 +3,7 @@ name: SwiftFormat fix and commit
 # on: workflow_dispatch
 
 # on:
-#   pull_request_target:
+#   pull_request:
 #   push:
 #     branches: master
 
