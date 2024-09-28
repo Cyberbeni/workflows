@@ -7,18 +7,23 @@ name: SwiftFormat fix and commit
 #   push:
 #     branches: master
 
-on: workflow_call
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: false
+        type: string
 
 jobs:
   swiftformat:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         ref: ${{ github.head_ref }}
     - name: Install SwiftFormat
-      uses: Cyberbeni/install-swift-tool@v2
+      uses: Cyberbeni/install-swift-tool@v3
       with:
         url: https://github.com/nicklockwood/SwiftFormat
         version: '*'
