@@ -11,13 +11,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-    - name: Install dependencies (package-lock.json)
-      if: hashFiles('package-lock.json') != ''
-      run: npm ci
-    - name: Install dependencies (yarn.lock)
-      if: hashFiles('yarn.lock') != ''
-      # https://yarnpkg.com/cli/install#examples
-      run: yarn install --immutable --immutable-cache --check-cache
+    - name: Install dependencies
+      run: |
+        if [[ -f yarn.lock ]]; then
+          # https://yarnpkg.com/cli/install#examples
+          yarn install --immutable --immutable-cache --check-cache
+        elif [[ -f package-lock.json ]]; then
+          npm ci
+        else
+          echo "error: Lock file not found."
+          exit 1
+        fi
     - name: Lint
       run: npm run lint
     - name: Build
