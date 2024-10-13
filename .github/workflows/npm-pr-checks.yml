@@ -18,6 +18,8 @@ jobs:
           yarn install --immutable --immutable-cache --check-cache
         elif [[ -f package-lock.json ]]; then
           npm ci
+        elif [[ -f pnpm-lock.yaml ]]; then
+          pnpm install
         else
           echo "error: Lock file not found."
           exit 1
