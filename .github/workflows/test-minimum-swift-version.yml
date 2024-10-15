@@ -2,6 +2,8 @@ name: Test minimum Swift version
 
 # on:
 #   pull_request:
+#   push:
+#     branches: master
 
 on:
   workflow_call:

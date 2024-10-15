@@ -2,6 +2,8 @@ name: npm PR checks
 
 # on:
 #   pull_request:
+#   push:
+#     branches: master
 
 on: workflow_call
 
