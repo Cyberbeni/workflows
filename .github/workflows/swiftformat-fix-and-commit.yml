@@ -26,7 +26,7 @@ jobs:
       uses: Cyberbeni/install-swift-tool@v3
       with:
         url: https://github.com/nicklockwood/SwiftFormat
-        version: '*'
+        version: ${{ inputs.version }}
     - name: Format
       run: swiftformat .
     - name: Commit

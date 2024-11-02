@@ -12,7 +12,6 @@ on:
         required: false
         type: string
 
-
 jobs:
   swiftformat-lint:
     runs-on: ubuntu-latest
