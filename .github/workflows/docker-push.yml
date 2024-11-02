@@ -6,6 +6,9 @@ name: Push tagged version to container registry
 #
 # jobs:
 #   docker-push:
+#     permissions:
+#       contents: read
+#       packages: write
 #     uses: Cyberbeni/workflows/.github/workflows/docker-push.yml@master
 #     with:
 #       image_name: ${{ github.repository }}
@@ -20,10 +23,6 @@ on:
 jobs:
   docker-push:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
