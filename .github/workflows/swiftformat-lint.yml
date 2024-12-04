@@ -24,4 +24,4 @@ jobs:
         url: https://github.com/nicklockwood/SwiftFormat
         version: ${{ inputs.version }}
     - name: Lint
-      run: swiftformat --lint .
+      run: swiftformat --lint --reporter github-actions-log .
