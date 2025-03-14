@@ -66,6 +66,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           no-cache: true
           cache-from: ghcr.io/${{ env.IMAGE_NAME }}:latest
+          cache-to: type=inline
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
