@@ -27,6 +27,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Fix image name casing
+        run: |
+          echo "IMAGE_NAME=${INPUT_NAME,,}" >>${GITHUB_ENV}
+        env:
+          INPUT_NAME: '${{ inputs.image_name }}'
+
       # Set up BuildKit Docker container builder to be able to build multi-platform images
       # https://github.com/docker/setup-buildx-action
       - name: Set up Docker Buildx
@@ -46,7 +52,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ghcr.io/${{ inputs.image_name }}
+            ghcr.io/${{ env.IMAGE_NAME }}
           tags: |
             type=semver,pattern=v{{version}}
             type=semver,pattern=v{{major}}
@@ -59,7 +65,7 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           no-cache: true
-          cache-from: ghcr.io/${{ inputs.image_name }}:latest
+          cache-from: ghcr.io/${{ env.IMAGE_NAME }}:latest
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
