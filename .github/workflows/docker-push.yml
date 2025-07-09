@@ -19,6 +19,14 @@ on:
       image_name:
         required: true
         type: string
+      qemu:
+        required: false
+        type: boolean
+        default: false
+      platforms:
+        required: false
+        type: string
+        default: linux/amd64,linux/arm64
 
 jobs:
   docker-push:
@@ -26,6 +34,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      
+      # https://github.com/docker/setup-qemu-action
+      - if: ${{ inputs.qemu }}
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
       # Set up BuildKit Docker container builder to be able to build multi-platform images
       # https://github.com/docker/setup-buildx-action
@@ -57,7 +70,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          platforms: ${{ inputs.platforms }}
           no-cache: true
           push: true
           tags: ${{ steps.meta.outputs.tags }}
