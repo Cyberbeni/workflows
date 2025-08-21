@@ -24,9 +24,9 @@ jobs:
           OS="$(uname -s)"
           if [[ "$OS" = "Linux" ]]; then
             source /etc/os-release
-            echo "cache-prefix=$OS-$ID-$VERSION_ID" >> $GITHUB_OUTPUT
+            echo "cache-prefix=$OS-$(arch)-$ID-$VERSION_ID" >> $GITHUB_OUTPUT
           else
-            echo "cache-prefix=$OS" >> $GITHUB_OUTPUT
+            echo "cache-prefix=$OS-$(arch)" >> $GITHUB_OUTPUT
           fi
           if grep -q \.testTarget\( Package.swift ; then
             echo "has-test=true" >> $GITHUB_OUTPUT
