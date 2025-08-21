@@ -42,9 +42,9 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: .build
-          key: ${{ steps.prepare.outputs.cache-prefix }}-swift-test-${{ hashFiles('Package.resolved') }}
+          key: swift-test-${{ steps.prepare.outputs.cache-prefix }}-${{ hashFiles('Package.resolved') }}
           restore-keys: |
-            ${{ steps.prepare.outputs.cache-prefix }}-swift-test-
+            swift-test-${{ steps.prepare.outputs.cache-prefix }}-
       - name: Build
         shell: bash
         run: |
