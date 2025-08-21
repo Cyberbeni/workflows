@@ -28,7 +28,7 @@ jobs:
           else
             echo "cache-prefix=$OS" >> $GITHUB_OUTPUT
           fi
-          if [[ grep -q \.testTarget\( Package.swift ]]; then
+          if grep -q \.testTarget\( Package.swift ; then
             echo "has-test=true" >> $GITHUB_OUTPUT
           else
             echo "has-test=false" >> $GITHUB_OUTPUT
