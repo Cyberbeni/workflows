@@ -33,6 +33,11 @@ jobs:
           else
             echo "has-test=false" >> $GITHUB_OUTPUT
           fi
+      - name: Xcode select
+        if: ${{ runner.os == 'macOS' }}
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
       - uses: actions/cache@v4
         with:
           path: .build
