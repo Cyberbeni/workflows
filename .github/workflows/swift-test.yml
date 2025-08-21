@@ -10,17 +10,40 @@ on:
 
 jobs:
   swift-test:
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest, macos-latest]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Prepare
+        id: prepare
+        shell: bash
+        run: |
+          OS="${uname -s}"
+          if [[ "$OS" = "Linux" ]]; then
+            source /etc/os-release
+            echo "cache-prefix=$OS-$ID-$VERSION_ID" >> $GITHUB_OUTPUT
+          else
+            echo "cache-prefix=$OS" >> $GITHUB_OUTPUT
+          fi
+          if [[ grep -q \.testTarget\( Package.swift ]]; then
+            echo "has-test=true" >> $GITHUB_OUTPUT
+          else
+            echo "has-test=false" >> $GITHUB_OUTPUT
+          fi
       - uses: actions/cache@v4
         with:
           path: .build
-          key: ${{ runner.os }}-swift-test-${{ hashFiles('Package.resolved') }}
+          key: ${{ steps.prepare.outputs.cache-prefix }}-swift-test-${{ hashFiles('Package.resolved') }}
           restore-keys: |
-            ${{ runner.os }}-swift-test-
+            ${{ steps.prepare.outputs.cache-prefix }}-swift-test-
+      - name: Build
+        if: ${{ steps.prepare.outputs.has-test == 'true' }}
+        shell: bash
+        run: |
+          set -o pipefail
+          swift build --only-use-versions-from-resolved-file
       - name: Test
+        if: ${{ steps.prepare.outputs.has-test == 'true' }}
         shell: bash
         run: |
           set -o pipefail
