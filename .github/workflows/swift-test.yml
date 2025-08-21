@@ -40,7 +40,6 @@ jobs:
           restore-keys: |
             ${{ steps.prepare.outputs.cache-prefix }}-swift-test-
       - name: Build
-        if: ${{ steps.prepare.outputs.has-test == 'true' }}
         shell: bash
         run: |
           set -o pipefail
