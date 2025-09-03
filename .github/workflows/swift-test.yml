@@ -25,14 +25,14 @@ jobs:
           OS="$(uname -s)"
           if [[ "$OS" = "Linux" ]]; then
             source /etc/os-release
-            echo "cache-prefix=$OS-$(arch)-$ID-$VERSION_ID" >> $GITHUB_OUTPUT
+            echo "CACHE_PREFIX=$OS-$(arch)-$ID-$VERSION_ID" >> $GITHUB_ENV
           else
-            echo "cache-prefix=$OS-$(arch)" >> $GITHUB_OUTPUT
+            echo "CACHE_PREFIX=$OS-$(arch)" >> $GITHUB_ENV
           fi
           if grep -q \.testTarget\( Package.swift ; then
-            echo "has-test=true" >> $GITHUB_OUTPUT
+            echo "HAS_TEST=true" >> $GITHUB_ENV
           else
-            echo "has-test=false" >> $GITHUB_OUTPUT
+            echo "HAS_TEST=false" >> $GITHUB_ENV
           fi
       - name: Xcode select
         if: ${{ runner.os == 'macOS' }}
@@ -42,16 +42,16 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: .build
-          key: swift-test-${{ steps.prepare.outputs.cache-prefix }}-${{ hashFiles('Package.resolved') }}
+          key: swift-test-${{ env.CACHE_PREFIX }}-${{ hashFiles('Package.resolved') }}
           restore-keys: |
-            swift-test-${{ steps.prepare.outputs.cache-prefix }}-
+            swift-test-${{ env.CACHE_PREFIX }}-
       - name: Build
         shell: bash
         run: |
           set -o pipefail
           swift build --only-use-versions-from-resolved-file
       - name: Test
-        if: ${{ steps.prepare.outputs.has-test == 'true' }}
+        if: ${{ env.HAS_TEST == 'true' }}
         shell: bash
         run: |
           set -o pipefail
