@@ -62,7 +62,6 @@ jobs:
           tags: |
             type=semver,pattern={{raw}}
             type=semver,pattern=v{{major}}
-            type=ref,event=branch
             type=ref,event=pr
 
       # https://github.com/docker/build-push-action
